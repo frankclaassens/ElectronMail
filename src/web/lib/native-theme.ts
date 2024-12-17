@@ -10,6 +10,7 @@ type queryLinkElementsType = (
     windowProxy: Exclude<HTMLIFrameElement["contentWindow"], null>,
 ) => HTMLLinkElement[];
 
+// THIS IS MY COMMENT
 const queryLinkElements: queryLinkElementsType = (() => {
     const shouldUseDarkColorsBasedFileEndings = {"true": "-dark.css", "false": "-light.css"} as const;
     const result: queryLinkElementsType = (shouldUseDarkColors, windowProxy) => {
