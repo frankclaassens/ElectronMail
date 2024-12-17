@@ -3,7 +3,7 @@
 # - https://github.com/actions/runner/issues/646
 
 name: 'GitHub Actions CI'
-on: { push: { branches: [master] }, pull_request: { branches: [master] } }
+on: { push: { branches: [master] }, pull_request: { branches: [master] }, workflow_dispatch: { branches: [master] } }
 env: { ELECTRON_MAIL_NODE_VERSION: 20, PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1 }
 jobs:
   build-proton-clients:
@@ -33,11 +33,7 @@ jobs:
       - { name: build, run: ./scripts/ci/prepare-webclients.sh }
       - { name: print ./output/git/backup files, shell: bash, run: ./scripts/ci/list-fs-content.sh ./output/git/backup }
       - { name: tar artifact, run: tar -cvf proton-clients-artifact.tar ./output/git/backup ./app/assets/db-search-monaco-editor }
-      - {
-          name: upload artifact,
-          uses: actions/upload-artifact@v4,
-          with: { name: proton-clients-artifact, path: ./proton-clients-artifact.tar, if-no-files-found: error },
-        }
+      - { name: upload artifact, uses: actions/upload-artifact@v4, with: { name: proton-clients-artifact, path: ./proton-clients-artifact.tar, if-no-files-found: error }, }
   build-app:
     strategy: { matrix: { os: [ubuntu-20.04, windows-2019, macos-12] }, fail-fast: false }
     runs-on: ${{ matrix.os }}
